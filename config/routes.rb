@@ -1,3 +1,13 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+
+
+
+  # Open the website to our welcome page
+  root 'welcome#index'
+
+
+  resources :tasks
+
+
 end
