@@ -1,0 +1,35 @@
+<table class="table table-hover">
+  <thead>
+  <tr>
+  <th>Name</th>
+  <th>Description</th>
+  <th>Category</th>
+  <th>Tags</th>
+  <th>Priority</th>
+  <th>Duration</th>
+  <th>Occurrence</th>
+    <th>Edit</th>
+  </tr>
+
+  </thead>
+<tbody>
+  <% for task in @tasks %>
+    <tr>
+
+      <td><%= link_to task.name, controller: "tasks", action: "show", id: task.id %></td>
+      <td><%= task.description %></td>
+      <td><%= task.category %></td>
+      <td><%= task.tags %></td>
+      <td><%= task.priority %></td>
+      <td><%= task.duration %> min</td>
+      <td>Occurs <%= task.occurrence_num %> <%= 'time'.pluralize task.occurrence_num %>
+        every <%= task.occurrence_term %> <%= 'day'.pluralize task.occurrence_term %></td>
+      <td>
+        <%= link_to "Edit", controller: "tasks", action: "edit", id: task.id %>
+      </td>
+
+    </tr>
+  <% end %>
+</tbody>
+
+</table>

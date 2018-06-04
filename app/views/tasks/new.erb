@@ -1,0 +1,44 @@
+<h1><%= @action.capitalize %> Task</h1>
+
+<br>
+<%= form_for @task, url: {action:@action} do |f| %>
+
+  <div class="form-group">
+    <label for="task_name">Name</label>
+    <%= f.text_field :name, { class:'form-control'} %>
+  </div>
+  <div class="form-group">
+    <label for="task_description">Description</label>
+    <%= f.text_area :description, { class:'form-control'}  %>
+    </div>
+  <div class="form-group">
+    <label for="task_category">Category</label>
+    <%= f.text_field :category, { class:'form-control'}  %>
+    </div>
+  <div class="form-group">
+    <label for="task_tags">Tags</label>
+    <%= f.text_field :tags, { class:'form-control'}  %>
+    </div>
+  <div class="form-group">
+    <label for="task_priority">Priority</label>
+    <%= f.text_field :priority, { class:'form-control'}  %>
+    </div>
+  <div class="form-group">
+    <label for="task_duration">Duration (Minutes)</label>
+    <%= f.text_field :duration, { class:'form-control'}  %>
+  </div>
+  <div class="form-group">
+    <label for="task_occurrence_term">Occurrence Term (Days)</label>
+    <%= f.text_field :occurrence_term, { class:'form-control'}  %>
+  </div>
+  <div class="form-group">
+    <label for="task_occurrence_num">Number of Occurrences per Term</label>
+    <%= f.text_field :occurrence_num, { class:'form-control'}  %>
+  </div>
+
+
+
+  <% #JOURNAL UJS lets you disable submit buttons after clicking them to prevent double-clicking %>
+  <%= f.submit data: { "disable-with": "Saving..." } %>
+
+<% end %>
