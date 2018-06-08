@@ -1,0 +1,2 @@
+class ExternalCalendar < ApplicationRecord
+end
