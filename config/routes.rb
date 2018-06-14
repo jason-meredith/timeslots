@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
 
   resources :tasks
+  resources :external_calendars
 
 
 end

@@ -1,0 +1,2 @@
+module ExternalCalendarsHelper
+end

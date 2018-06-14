@@ -1,0 +1,245 @@
+<style>
+
+  .colorbox {
+    height: 1.2em;
+    width: 1.2em;
+  }
+
+    .deleteCal {
+      cursor: pointer;
+    }
+
+</style>
+
+<script>
+
+
+
+    $( document ).ready( function() {
+
+        // Add a calendar row to the table
+        var addCalToTable = function(name, color, data) {
+            var row  = '<tr><td><div class="colorbox" style="background: ' + color + ';"></div></td>';
+                row +=     '<td>' + name + '</td>';
+                row +=     '<td><span class="deleteCal" data-name="' + name + '" data-id="' + data['id'] + '">&times;</span></td></tr>';
+
+            $('#calendarsTbl tbody').append(row);
+
+            setDeleteCalButtonClick();
+        };
+
+        // Get the info bar
+        var infoBar = $('#infoBar');
+        var infoHeading = $('#infoHeading');
+        var infoBody = $('#infoBody');
+
+        // Get the upload progress span
+        var uploadProgress = $("#uploadProgress");
+
+
+        // POST create index calendar
+        $('#addBtn').click(function () {
+            // Get values
+            var calData = {
+              name: $('#nameTxt').val(),
+              url: $('#urlTxt').val(),
+              color: $('#colorTxt').val()
+            };
+            // Create post request
+
+            // Validate forms before submitting
+            if(calData['name'].length > 0 && calData['url'].length > 0) {
+                $.ajax({
+                    url: '<%= url_for controller: 'external_calendars', action: 'create' %>',
+                    data: calData,
+                    timeout: 0,
+                    type: 'POST',
+                    beforeSend: function() {
+                        uploadProgress.text('Processing.... this may take a moment')
+                    },
+                    success: function (data) {
+                        // If the download and parsing was successful
+                        switch(data['result']['code']) {
+                            case 0:
+                                addCalToTable(calData['name'], calData['color'], data);
+                                infoBar.removeClass("alert alert-danger");
+                                infoBar.removeClass("alert alert-warning");
+                                infoBar.addClass("alert alert-success");
+                                infoHeading.text("Success!");
+                                infoBody.text('Added \'' + calData['name'] + '\' to external calendars');
+                                break;
+                            case 1:
+                                addCalToTable(calData['name'], calData['color'], data);
+                                infoBar.removeClass("alert alert-danger");
+                                infoBar.removeClass("alert alert-success");
+                                infoBar.addClass("alert alert-warning");
+                                infoHeading.text("Warning!");
+                                infoBody.text('Added \'' + calData['name'] + '\' to external calendars, but no timeslots were found!');
+                                break;
+                            default:
+                                infoBar.removeClass("alert alert-success");
+                                infoBar.removeClass("alert alert-warning");
+                                infoBar.addClass("alert alert-danger");
+                                infoHeading.text("Error!");
+                                infoBody.text(data['result']['text']);
+                                break;
+                        }
+
+
+                        infoBar.show();
+
+
+                    },
+                    error: function (jqXHR, textStatus, error) {
+                        infoBar.removeClass("alert alert-success");
+                        infoBar.addClass("alert alert-danger");
+                        infoHeading.text("Error: ");
+                        infoBody.text(error);
+
+
+                        infoBar.show();
+                    },
+
+                    complete: function() {
+                        uploadProgress.text("")
+                    }
+                })
+                // Invalid form
+            } else {
+                var error = "Field(s) cannot be empty: ";
+                var invalidFields = [];
+                if(calData['name'].length === 0) {
+                    invalidFields.push( "name" );
+                }
+                if(calData['url'].length === 0) {
+                    invalidFields.push( "url" );
+                }
+                error += invalidFields.join(', ');
+
+                infoBar.removeClass("alert alert-success");
+                infoBar.addClass("alert alert-danger");
+                infoHeading.text("Error: ");
+                infoBody.text(error);
+
+
+                infoBar.show();
+            }
+
+
+        });
+
+        // Delete calendar button
+        var setDeleteCalButtonClick = function() {
+            $('.deleteCal').click(function() {
+                var calDeleteId = $( this ).data('id');
+                var calDeleteName = $( this ).data('name');
+
+                // Update delete confirm modal text
+                $("#deleteCalName").text(calDeleteName);
+
+                // Show delete confirm modal
+                $("#deleteModal").modal('show');
+
+                // Change the modal delete button to delete the selected calendar
+                $("#deleteCalBtn").click(function() {
+                    $.ajax({
+                        url:  window.location.pathname + '/' + calDeleteId,
+                        type: 'DELETE',
+                        success: function(data) {
+                            location.reload(true);
+                        }
+
+                    });
+                });
+            })
+        };
+
+        setDeleteCalButtonClick();
+
+    });
+
+</script>
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/">Home</a></li>
+  <li class="breadcrumb-item active">External Calendar</li>
+</ol>
+
+<div style="display: none" id="infoBar" class="alert alert-success">
+  <strong><span id="infoHeading"></span></strong>
+  <span id="infoBody"></span>
+</div>
+
+
+<div class="row">
+  <div class="col-sm-4">
+    <table class="table table-hover" id="calendarsTbl">
+
+      <tbody>
+      <% for cal in @calendars %>
+        <tr>
+
+          <td><div class="colorbox" style="background: <%= cal.color %>;"></div></td>
+          <td><%= cal.name %></td>
+          <td>
+            <span class="deleteCal" data-name="<%= cal.name %>" data-id="<%= cal.id %>">&times;</span>
+          </td>
+
+
+        </tr>
+      <% end %>
+      </tbody>
+
+    </table>
+
+  </div>
+  <div class="col-sm-8">
+    <h2>Add Calendar</h2>
+
+    <br>
+
+    <label for="name">Name</label>
+    <input id="nameTxt" name="name" type="text" class="form-control">
+    <br>
+
+    <label for="url">URL</label>
+    <input id="urlTxt" name="url" type="text" class="form-control">
+
+    <br>
+    <label for="color">Color</label><br>
+    <input id="colorTxt" name="color" type="color">
+
+    <br><br><br>
+
+    <button id="addBtn" class="btn btn-primary">Add</button> <span id="uploadProgress"></span>
+
+
+  </div>
+
+</div>
+
+
+<!-- Delete calendar Modal -->
+<div id="deleteModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Calendar</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Are you sure you want to delete <strong><span id="deleteCalName"></span></strong>?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button id="deleteCalBtn" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
