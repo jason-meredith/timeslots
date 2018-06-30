@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181112005758) do
+ActiveRecord::Schema.define(version: 20181112012409) do
 
   create_table "external_calendars", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.datetime "created_at", null: false
@@ -18,10 +18,17 @@ ActiveRecord::Schema.define(version: 20181112005758) do
     t.string "name"
     t.string "url"
     t.string "color"
-    t.string "hash"
+    t.string "diffhash"
   end
 
   create_table "external_events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "external_calendar_id"
+    t.index ["external_calendar_id"], name: "index_external_events_on_external_calendar_id"
+  end
+
+  create_table "scheduled_tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -39,4 +46,5 @@ ActiveRecord::Schema.define(version: 20181112005758) do
     t.integer "occurrence_num"
   end
 
+  add_foreign_key "external_events", "external_calendars"
 end
