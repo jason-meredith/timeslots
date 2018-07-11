@@ -22,7 +22,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/timeslots@Development__timeslots.rcov" NAME="Development: timeslots Coverage Results" MODIFIED="1541984932708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="timeslots" />
+    <SUITE FILE_PATH="coverage/timeslots@Development__timeslots.rcov" NAME="Development: timeslots Coverage Results" MODIFIED="1541986304201" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="timeslots" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-1786475085">
