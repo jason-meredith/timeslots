@@ -1,2 +1,105 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
+
+<div class="float-right"><small>Login</small></div>
+<br>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item active">Home</li>
+</ol>
+
+
+<div class="row">
+  <div class="col-sm">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Jason Meredith</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Administrator</h6>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+        <%= link_to 'Schedule', :schedule, class: 'card-link'  %>
+        <a href="#" class="card-link">Settings</a>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-sm">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Calendars</h5>
+        <p class="card-text">
+          <small>
+
+            <% @calendars.each do |calendar| %>
+
+              <%= calendar.name %>
+              <span class="badge badge-success">Up-to-Date</span>
+              <br>
+            <% end %>
+
+            Carl's Calendar
+            <span class="badge badge-success">Up-to-Date</span>
+            <br>
+
+            Dan's Calendar
+            <span class="badge badge-danger">Broken Link</span>
+            <br>
+
+            Work Events
+            <span class="badge badge-warning">No Events Found</span>
+            <br>
+
+            Campus Events
+            <span class="badge badge-warning">No Events Found</span>
+
+          </small>
+        </p>
+        <%= link_to 'Edit Calendars', :external_calendars, class: 'card-link'  %>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-sm">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Tasks</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+        <p class="card-text">
+          <small>
+            <% @tasks.each do |task| %>
+
+              <%= task.name %>
+              <br>
+            <% end %>
+          </small>
+        </p>
+        <%= link_to 'Details', :tasks, class: 'card-link'  %>
+        <a onclick="$('#getCalLinkModal').modal();">Get iCal Link</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<br>
+
+<!-- Modal -->
+<div class="modal fade" id="getCalLinkModal" tabindex="-1" role="dialog" aria-labelledby="getCalLinkModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Scheduled Task Calendar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-text">Add this link to your calendar</div>
+        <text><%= url_for(action: 'generated_calendar', controller: 'api/schedule', only_path: false) %></text>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
