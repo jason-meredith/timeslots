@@ -1,0 +1,316 @@
+<style>
+  div.relative {
+    position: relative;
+    width: 100%;
+    height: 1000px;
+    border: 3px solid black;
+    border-radius: 5px;
+  }
+  div.day:before {
+    z-index: -1;
+    opacity: 0;
+  }
+
+
+  div.day {
+    position: absolute;
+    top: 0;
+    width: 11%;
+    height: 100%;
+    border: 1px solid black;
+  }
+
+  div.taskContainer {
+    float: right;
+  }
+
+
+  div.task.selected {
+    box-shadow: 0 2px 4px 2px rgba(0, 151, 133, 0.5), 0 3px 10px 0 rgba(0, 151, 133, 0.5);
+  }
+
+    div.event {
+      background: white;
+      margin: 2%;
+      padding: 2%;
+      border: 2px solid black;
+      border-radius: 5px;
+      position: absolute;
+      left: 0%;
+      width: 96%;
+      font-size: small;
+      color: white;
+      overflow:hidden;
+      cursor: default;
+      z-index: 10;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    div.event.scheduledTask {
+      color: black;
+      border: 2px dashed black;
+      z-index: 10;
+    }
+
+    div.task {
+      margin: 2%;
+      padding: 2%;
+      border: 2px solid black;
+      border-radius: 5px;
+      font-size: small;
+      color: black;
+      overflow:hidden;
+      cursor: pointer;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    }
+
+
+    div.blocked {
+      background: repeating-linear-gradient(
+          -45deg,
+          maroon,
+          maroon 5px,
+          white 5px,
+          white 10px
+      );
+
+      z-index: 20;
+    }
+
+    div.dateNum {
+      text-align:center;
+      border: 2px solid black;
+      font-style: italic;
+      font-size:small;
+      font-weight: bold;
+      padding-top: 2px;
+      height: 30px;
+      width: 30px;
+      border-radius: 15px;
+      margin-top:5px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+    }
+</style>
+
+<script>
+  $(document).ready(function() {
+
+
+
+
+      var week = 0;
+
+      var eventsSrc;
+      var scheduledTaskSrc;
+      var taskSrc;
+      var freetimeSrc;
+
+      var calendarDiv;
+
+
+      function builderOnReady()  {
+
+          $('[data-toggle="tooltip"]').tooltip();
+
+          $('.blocked').hide();
+
+          $('.task').click(function (event) {
+
+              // Get the Task that was clicked
+              var task = $(this);
+              var taskId = task.data('taskid');
+              var taskName = task.data('name');
+
+              // Toggle highlighting of the Task clicked while unhighlighting all others
+              // as well as showing/hiding freetime slots
+              var selected = $(this).hasClass("selected");
+              $('.task').removeClass("selected");
+
+              if(!selected) {
+                  $(this).addClass("selected");
+                  $('.blocked').fadeIn();
+              } else {
+                  $('.blocked').fadeOut();
+              }
+
+              // When you click a freetime slot
+              $('.freetime').off().on('click', function() {
+
+                  $('#addTaskModal').modal();
+
+                  var freetimeSlot = $(this);
+                  var slot = Freetime.getFreetimeSlot(freetimeSlot.data('id'));
+                  var date = slot.day.date;
+
+                  $('#modal-taskName').text(taskName);
+
+
+                  /**
+                   <% # JOURNAL [SHORT] Use .off().on('click', function () {...}); instead of .click() to prevent multiple event handler firings %>
+                   *  Simply having $(...).click(function() {...}); would cause a bug here where
+                   *  multiple identical handlers would be added to the same event causing the calendar
+                   *  to print recursively over itself. Use .off() to remove the existing click handler
+                   */
+                  $('#addTaskBtn').off().on('click', function() {
+
+                      var time = $('#modal-selectedTime').val();
+
+
+                      $.ajax({
+                          type: 'POST',
+                          url: '<%= url_for controller: 'schedule', action:'schedule_task' %>',
+                          data: {
+                              taskId: taskId,
+                              time: time,
+                              date: date
+                          }
+                      }).always(function(data) {
+                          // Get the info bar
+                          var infoBar = $('#infoBar');
+                          var infoHeading = $('#infoHeading');
+                          var infoBody = $('#infoBody');
+
+                          if(data['status'] === 200) {
+                              infoBar.removeClass("alert alert-danger");
+                              infoBar.addClass("alert alert-success");
+                              infoHeading.text("Success!");
+                              infoBody.text(data['body']);
+                          } else {
+                              infoBar.removeClass("alert alert-success");
+                              infoBar.addClass("alert alert-danger");
+                              infoHeading.text("Error!");
+                              infoBody.text(data['body']);
+                          }
+
+                          infoBar.show();
+                          $('.blocked').fadeOut();
+                          refresh();
+                      })
+                  });
+
+
+              })
+
+
+          });
+
+      };
+
+
+      var refresh = function () {
+
+
+          calendarDiv = document.getElementById('calendar');
+
+          var builder = new ScheduleBuilder();
+          builder.setOnReady(builderOnReady);
+
+          // Data sources
+          eventsSrc = '<%= url_for controller: 'api/schedule', action: 'external_events' %>/' + week;
+          scheduledTaskSrc = '<%= url_for controller: 'api/schedule', action: 'scheduled_tasks' %>/' + week;
+          taskSrc = '<%= url_for controller: 'api/tasks', action: 'queued' %>/' + week;
+          freetimeSrc = '<%= url_for controller: 'api/schedule', action: 'freetime' %>/' + week;
+
+          //builder.resetComponents();
+          builder.addComponent(calendarDiv, eventsSrc, displayExternalEvents);
+          builder.addComponent(calendarDiv, scheduledTaskSrc, displayScheduledTasks);
+          builder.addComponent(calendarDiv, taskSrc, displayTaskQueue);
+          builder.addComponent(calendarDiv, freetimeSrc, displayFreetimeSlots);
+
+
+          $(calendarDiv).empty();
+          builder.addBlocks();
+
+
+
+      };
+
+      refresh();
+
+
+
+      // Go forward and back in weeks buttons
+
+      $('#btnForward').click(function() {
+
+          week++;
+          refresh();
+      });
+
+      $('#btnBack').click(function() {
+
+          week--;
+          refresh();
+
+      });
+
+      $('#btnToday').click(function () {
+
+          week = 0;
+          refresh();
+
+      });
+
+
+
+
+
+  });
+</script>
+
+<div class="float-right"><small>Login</small></div>
+<br>
+<!-- Bread crumb -->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="/">Home</a></li>
+  <li class="breadcrumb-item active">Schedule</li>
+</ol>
+
+
+
+<!-- Info bar -->
+<div style="display: none" id="infoBar" class="alert alert-success">
+  <strong><span id="infoHeading"></span></strong>
+  <span id="infoBody"></span>
+</div>
+
+<!-- Week Forward and Back -->
+<p>
+  <button class="btn" id="btnBack">Back</button>
+  <button class="btn" id="btnToday">This Week</button>
+  <button class="btn" id="btnForward">Forward</button>
+</p>
+
+<!-- Calendar -->
+<div id="calendar" class="relative">
+
+  <div id="taskContainer"></div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Task To Schedule</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-taskName">TaskName</div>
+        Pick a time between
+        <div id="modal-startTime"></div> and
+        <div id="modal-endTime"></div><br>
+        <input type="time" id="modal-selectedTime">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="addTaskBtn" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
