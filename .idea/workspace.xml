@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d455f5ac-1b84-4158-9ecd-fb02d5ccae17" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/app/assets/javascripts/schedule.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/concerns/week_viewable.rb" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/views/external_calendars/index.erb" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/views/schedule/index.html.erb" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/views/tasks/index.erb" afterDir="false" />
@@ -41,9 +42,9 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="Gemfile" value="1" />
-          <entry key="erb" value="5" />
+          <entry key="erb" value="6" />
           <entry key="lock" value="1" />
-          <entry key="rb" value="18" />
+          <entry key="rb" value="24" />
           <entry key="ts" value="1" />
           <entry key="yml" value="1" />
         </counts>
@@ -51,8 +52,8 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="RHTML" value="5" />
-          <entry key="Ruby" value="19" />
+          <entry key="RHTML" value="6" />
+          <entry key="Ruby" value="25" />
           <entry key="TypeScript" value="1" />
           <entry key="YAML" value="1" />
         </counts>
@@ -82,15 +83,6 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/routes.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="53">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/assets/javascripts/schedule.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state>
@@ -108,51 +100,64 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/schedule/index.html.erb">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/db/migrate/20181112005758_create_external_events.rb">
+        <entry file="file://$PROJECT_DIR$/app/views/welcome/index.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+            <state relative-caret-position="383">
+              <caret line="105" selection-start-line="105" selection-end-line="105" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/controllers/schedule_controller.rb">
+        <entry file="file://$PROJECT_DIR$/app/models/application_record.rb">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/external_calendar.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" selection-start-line="36" selection-end-line="36" />
+            <state relative-caret-position="15">
+              <caret line="1" column="51" selection-start-line="1" selection-start-column="51" selection-end-line="1" selection-end-column="51" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/db/migrate/20180216190749_change_cal_hash_name.rb">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/db/migrate/20181112012409_add_calendar_to_events.rb">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/db/migrate/20181112012408_create_scheduled_tasks.rb">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/db/migrate/20181112004243_create_external_calendars.rb">
+        <entry file="file://$PROJECT_DIR$/app/models/external_event.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="7" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+            <state relative-caret-position="840">
+              <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/scheduled_task.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/task.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="435">
+              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/models/concerns/week_viewable.rb">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -170,13 +175,16 @@
         <option value="$PROJECT_DIR$/db/migrate/20181112004243_create_external_calendars.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20181112005758_create_external_events.rb" />
         <option value="$PROJECT_DIR$/app/models/external_calendar.rb" />
-        <option value="$PROJECT_DIR$/app/models/external_event.rb" />
         <option value="$PROJECT_DIR$/Gemfile" />
         <option value="$PROJECT_DIR$/app/controllers/external_calendar_controller.rb" />
         <option value="$PROJECT_DIR$/app/helpers/external_calendars_helper.rb" />
         <option value="$PROJECT_DIR$/lib/external_calendars/CalendarParser.rb" />
         <option value="$PROJECT_DIR$/app/controllers/schedule_controller.rb" />
         <option value="$PROJECT_DIR$/config/routes.rb" />
+        <option value="$PROJECT_DIR$/app/views/welcome/index.html.erb" />
+        <option value="$PROJECT_DIR$/app/models/external_event.rb" />
+        <option value="$PROJECT_DIR$/app/models/scheduled_task.rb" />
+        <option value="$PROJECT_DIR$/app/models/task.rb" />
       </list>
     </option>
   </component>
@@ -258,6 +266,13 @@
               <item name="timeslots" type="b2602c69:ProjectViewProjectNode" />
               <item name="timeslots" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
+              <item name="concerns" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="timeslots" type="b2602c69:ProjectViewProjectNode" />
+              <item name="timeslots" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -266,6 +281,32 @@
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="external_calendars" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="timeslots" type="b2602c69:ProjectViewProjectNode" />
+              <item name="timeslots" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="schedule" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="timeslots" type="b2602c69:ProjectViewProjectNode" />
+              <item name="timeslots" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="tasks" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="timeslots" type="b2602c69:ProjectViewProjectNode" />
+              <item name="timeslots" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="welcome" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="timeslots" type="b2602c69:ProjectViewProjectNode" />
+              <item name="timeslots" type="462c0819:PsiDirectoryNode" />
+              <item name="bin" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="timeslots" type="b2602c69:ProjectViewProjectNode" />
@@ -315,11 +356,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/models/concerns" />
       <recent name="$PROJECT_DIR$/app/views/schedule" />
       <recent name="$PROJECT_DIR$/lib" />
       <recent name="$PROJECT_DIR$/app/assets/javascripts" />
       <recent name="$PROJECT_DIR$/db/migrate" />
-      <recent name="$PROJECT_DIR$/app/views/external_calendar" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -448,12 +489,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1541981593262</updated>
-      <workItem from="1541981595282" duration="4691000" />
+      <workItem from="1541981595282" duration="4935000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4691000" />
+    <option name="totallyTimeSpent" value="4935000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -534,20 +575,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="443">
           <caret line="56" selection-start-line="56" selection-end-line="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/external_calendar.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="51" selection-start-line="1" selection-start-column="51" selection-end-line="1" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/external_event.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="31" selection-start-line="2" selection-start-column="31" selection-end-line="2" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -656,6 +683,47 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/schedule/index.html.erb">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/welcome/index.html.erb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="383">
+          <caret line="105" selection-start-line="105" selection-end-line="105" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/application_record.rb">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/external_calendar.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="51" selection-start-line="1" selection-start-column="51" selection-end-line="1" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/external_event.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="840">
+          <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/scheduled_task.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/task.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/concerns/week_viewable.rb">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
