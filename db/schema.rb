@@ -10,30 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181112012409) do
+ActiveRecord::Schema.define(version: 20180820022237) do
 
-  create_table "external_calendars", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "external_calendars", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "url"
     t.string "color"
     t.string "diffhash"
+    t.text "raw_ics_data", limit: 16777215
+    t.boolean "valid_ics"
   end
 
-  create_table "external_events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "external_events", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.datetime "start"
+    t.datetime "end"
     t.bigint "external_calendar_id"
     t.index ["external_calendar_id"], name: "index_external_events_on_external_calendar_id"
   end
 
-  create_table "scheduled_tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "scheduled_tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "start"
+    t.bigint "task_id"
+    t.datetime "end"
+    t.index ["task_id"], name: "index_scheduled_tasks_on_task_id"
   end
 
-  create_table "tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci" do |t|
+  create_table "tasks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
@@ -47,4 +56,5 @@ ActiveRecord::Schema.define(version: 20181112012409) do
   end
 
   add_foreign_key "external_events", "external_calendars"
+  add_foreign_key "scheduled_tasks", "tasks"
 end
