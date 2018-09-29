@@ -7,7 +7,7 @@ class CalendarParser
 
   # Largest calendar file size, in bytes, downloadable (5MB)
   MAX_FILE_SIZE = 5_191_680
-  
+
   SUCCESS = 0
   WARNING = 1
   FAILURE = 2
@@ -66,12 +66,20 @@ class CalendarParser
       calendar.events.each do |event|
         # If its not a recurring event
         if event.rrule.first == nil
+          dtstart = DateTime.parse(event.dtstart.to_s)
+          dtend = if event.dtend == nil
+                    dtstart + 10.minutes
+                  else
+                    DateTime.parse(event.dtend.to_s)
+                  end
+
           # Add directly to array
-          new_event = { name: event.summary, start: DateTime.parse(event.dtstart.to_s),
-                        end: DateTime.parse(event.dtend.to_s) }
+          new_event = { name: event.summary, start: dtstart,
+                        end: dtend }
+
           @events << new_event
 
-        # If its a recurring event (has rrule)
+          # If its a recurring event (has rrule)
         else
           # For each occurrence add hash to array
           event.occurrences_between(event.dtstart, Date.today + 365).each do |occurrence|
@@ -81,9 +89,9 @@ class CalendarParser
         end
       end
       @status = if @events.length > 0
-        { code: SUCCESS, text: 'Parsing complete, events imported'}
-      else
-        { code: WARNING, text: 'Parsing complete, no events found'}
+                  { code: SUCCESS, text: 'Parsing complete, events imported'}
+                else
+                  { code: WARNING, text: 'Parsing complete, no events found'}
                 end
     else
       @status = { code: FAILURE, text: 'Parsing fail, invalid icalendar file'}
