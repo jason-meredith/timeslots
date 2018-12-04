@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
 
 
+  devise_for :users
   # Open the website to our welcome page
   root 'welcome#index'
 

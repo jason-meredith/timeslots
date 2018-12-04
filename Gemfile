@@ -34,6 +34,7 @@ gem 'rest-client'
 gem 'down'
 gem 'icalendar-recurrence'
 gem 'time_diff'
+gem 'devise'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
