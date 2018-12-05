@@ -1,7 +1,17 @@
 class ScheduleController < ApplicationController
 
-  def index
+  def calendar
 
+    group_name = params[:groupName]
+    group_id = params[:groupId]
+
+    group = Group.find_group(group_name, group_id)
+
+    if group == nil
+      render status: 404
+    end
+
+    render 'index'
   end
 
   def schedule_task

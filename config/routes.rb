@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
 
 
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions' }
   # Open the website to our welcome page
   root 'welcome#index'
 
@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 
 
   get 'schedule', to: 'schedule#index'
+
+  get 'schedule/:groupId/:groupName',
+      to: 'schedule#calendar',
+      constraints: { groupId: /[0-9]{8}/ }
 
   post 'schedule/add', to: 'schedule#schedule_task'
 

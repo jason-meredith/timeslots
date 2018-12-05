@@ -2,12 +2,13 @@ class WelcomeController < ApplicationController
   def index
 
 
-    unless user_signed_in?
+    if user_signed_in?
+      @user = current_user
+      @groups = current_user.groups
+    else
       redirect_to :new_user_session
     end
 
-    @calendars = ExternalCalendar.all
-    @tasks = Task.all
 
   end
 end
