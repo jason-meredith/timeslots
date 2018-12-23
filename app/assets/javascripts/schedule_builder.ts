@@ -1,4 +1,3 @@
-// JOURNAL [SHORT] Drawing a calendar using a sequential data pipeline framework
 /*
  * ScheduleBuilder is the main class. It has Components which represent a portion of the calendar.
  * Each component is given a div, a URL source of JSON data, and a function that processes the data
@@ -517,7 +516,7 @@ class Task {
         output += 'style="';
         output += 'width: 96%; ';
         output += 'height: ' + this.duration + '%; "> ';
-        output += '<b>' + this.name + '</b><br>';
+        output += '<b>' + this.name + '</b><span class="deleteTaskBtn float-right" data-name="' + this.name + '" data-id="' + this.taskid + '">&#10006;</span><br>';
         output += '<p>' + this.duration_text + '</p>';
         output += '<p><em>To be scheduled <b>' + this.occurrence_num + '</b>' + ' ';
 
@@ -585,6 +584,8 @@ class TaskQueue {
         this.tasks.forEach( (task) => {
             output += task.getHtml();
         });
+
+        output += "<br><div class='addTaskBtn'>+ Add Task</div>";
 
         output += "</div>";
 

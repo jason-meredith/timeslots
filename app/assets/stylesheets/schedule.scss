@@ -1,3 +1,113 @@
-// Place all the styles related to the Schedule controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.relative {
+  position: relative;
+  width: 100%;
+  height: 1000px;
+  border: 3px solid black;
+  border-radius: 5px;
+}
+
+
+.day {
+  position: absolute;
+  top: 0;
+  width: 11%;
+  height: 100%;
+  border: 1px solid black;
+  &:before {
+    z-index: -1;
+    opacity: 0;
+  }
+}
+
+.taskContainer {
+  float: right;
+}
+
+
+.event {
+  background: white;
+  margin: 2%;
+  padding: 2%;
+  border: 2px solid black;
+  border-radius: 5px;
+  position: absolute;
+  left: 0%;
+  width: 96%;
+  font-size: small;
+  color: white;
+  overflow:hidden;
+  cursor: default;
+  z-index: 10;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  &.scheduledTask {
+    color: black;
+    border: 2px dashed black;
+    z-index: 10;
+  }
+
+}
+
+
+
+.task {
+  margin: 2%;
+  padding: 2%;
+  border: 2px solid black;
+  border-radius: 5px;
+  font-size: small;
+  color: black;
+  overflow:hidden;
+  cursor: pointer;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+
+  &.selected {
+    box-shadow: 0 2px 4px 2px rgba(0, 151, 133, 0.5), 0 3px 10px 0 rgba(0, 151, 133, 0.5);
+  }
+
+}
+
+
+.blocked {
+  background: repeating-linear-gradient(
+                  -45deg,
+                  maroon,
+                  maroon 5px,
+                  white 5px,
+                  white 10px
+  );
+
+  z-index: 20;
+}
+
+.dateNum {
+  text-align:center;
+  border: 2px solid black;
+  font-style: italic;
+  font-size:small;
+  font-weight: bold;
+  padding-top: 2px;
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+  margin-top:5px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
+}
+
+.addTaskBtn {
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 1.1em;
+  border: 1px dotted;
+  padding: 5%;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 90%;
+}
+
+.deleteTaskBtn {
+  font-size: 1.4em;
+}

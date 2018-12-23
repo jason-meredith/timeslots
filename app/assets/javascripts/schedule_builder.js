@@ -309,7 +309,7 @@ var Task = (function () {
         output += 'style="';
         output += 'width: 96%; ';
         output += 'height: ' + this.duration + '%; "> ';
-        output += '<b>' + this.name + '</b><br>';
+        output += '<b>' + this.name + '</b><span class="deleteTaskBtn float-right" data-name="' + this.name + '" data-id="' + this.taskid + '">&#10006;</span><br>';
         output += '<p>' + this.duration_text + '</p>';
         output += '<p><em>To be scheduled <b>' + this.occurrence_num + '</b>' + ' ';
         output += ' times every <b>' + this.occurrence_term + '</b> days</p>';
@@ -359,6 +359,7 @@ var TaskQueue = (function () {
         this.tasks.forEach(function (task) {
             output += task.getHtml();
         });
+        output += "<br><div class='addTaskBtn'>+ Add Task</div>";
         output += "</div>";
         return output;
     };

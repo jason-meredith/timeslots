@@ -1,98 +1,4 @@
-<style>
-  div.relative {
-    position: relative;
-    width: 100%;
-    height: 1000px;
-    border: 3px solid black;
-    border-radius: 5px;
-  }
-  div.day:before {
-    z-index: -1;
-    opacity: 0;
-  }
-
-
-  div.day {
-    position: absolute;
-    top: 0;
-    width: 11%;
-    height: 100%;
-    border: 1px solid black;
-  }
-
-  div.taskContainer {
-    float: right;
-  }
-
-
-  div.task.selected {
-    box-shadow: 0 2px 4px 2px rgba(0, 151, 133, 0.5), 0 3px 10px 0 rgba(0, 151, 133, 0.5);
-  }
-
-    div.event {
-      background: white;
-      margin: 2%;
-      padding: 2%;
-      border: 2px solid black;
-      border-radius: 5px;
-      position: absolute;
-      left: 0%;
-      width: 96%;
-      font-size: small;
-      color: white;
-      overflow:hidden;
-      cursor: default;
-      z-index: 10;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    div.event.scheduledTask {
-      color: black;
-      border: 2px dashed black;
-      z-index: 10;
-    }
-
-    div.task {
-      margin: 2%;
-      padding: 2%;
-      border: 2px solid black;
-      border-radius: 5px;
-      font-size: small;
-      color: black;
-      overflow:hidden;
-      cursor: pointer;
-      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
-    }
-
-
-    div.blocked {
-      background: repeating-linear-gradient(
-          -45deg,
-          maroon,
-          maroon 5px,
-          white 5px,
-          white 10px
-      );
-
-      z-index: 20;
-    }
-
-    div.dateNum {
-      text-align:center;
-      border: 2px solid black;
-      font-style: italic;
-      font-size:small;
-      font-weight: bold;
-      padding-top: 2px;
-      height: 30px;
-      width: 30px;
-      border-radius: 15px;
-      margin-top:5px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
-    }
-</style>
+<%= stylesheet_link_tag params[:controller] %>
 
 <script>
   $(document).ready(function() {
@@ -110,9 +16,12 @@
       var calendarDiv;
 
 
+      // Execute this once the calendar has been generated and printed
       function builderOnReady()  {
 
+          // Turn on tooltips
           $('[data-toggle="tooltip"]').tooltip();
+
 
           $('.blocked').hide();
 
@@ -146,13 +55,6 @@
 
                   $('#modal-taskName').text(taskName);
 
-
-                  /**
-                   <% # JOURNAL [SHORT] Use .off().on('click', function () {...}); instead of .click() to prevent multiple event handler firings %>
-                   *  Simply having $(...).click(function() {...}); would cause a bug here where
-                   *  multiple identical handlers would be added to the same event causing the calendar
-                   *  to print recursively over itself. Use .off() to remove the existing click handler
-                   */
                   $('#addTaskBtn').off().on('click', function() {
 
                       var time = $('#modal-selectedTime').val();
@@ -193,8 +95,36 @@
 
               })
 
+              $('.deleteTaskBtn').off().on('click', function(e) {
+
+                  e.stopPropagation();
+
+                  var taskId = $(this).data("id");
+                  var taskName = $(this).data("name");
+
+                  $('#modal-deleteTaskName').text(taskName);
+
+                  $('#deleteTaskModal').modal();
+
+
+                  $('#deleteTaskBtn').off().on('click', function () {
+                      $.ajax({
+                          type: 'DELETE',
+                          url: '<%= url_for controller: 'tasks', action: 'index' %>/' + taskId,
+                          success: function () {
+                              window.location.reload();
+                          }
+                      })
+                  })
+              })
+
 
           });
+
+
+          $('.addTaskBtn').click(function () {
+              window.location.href = "<%= url_for :new_task %>";
+          })
 
       };
 
@@ -256,7 +186,6 @@
 
 
 
-
   });
 </script>
 
@@ -289,7 +218,7 @@
 </div>
 
 
-<!-- Modal -->
+<!-- Add Task to Schedule Modal -->
 <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -309,6 +238,28 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button id="addTaskBtn" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Delete Task Modal -->
+<div class="modal fade" id="deleteTaskModal" tabindex="-1" role="dialog" aria-labelledby="deleteTaskModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Task?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-deleteTaskName">TaskName</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="deleteTaskBtn" type="button" class="btn btn-primary" data-dismiss="modal">Delete</button>
       </div>
     </div>
   </div>
