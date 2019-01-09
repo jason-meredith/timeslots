@@ -1,6 +1,7 @@
+<%= stylesheet_link_tag params[:controller] %>
+
+
 <script>
-
-
 
     $( document ).ready( function() {
 
@@ -30,14 +31,16 @@
             var calData = {
               name: $('#nameTxt').val(),
               url: $('#urlTxt').val(),
-              color: $('#colorTxt').val()
+              color: $('#colorTxt').val(),
+                groupId: '<%= @group_id %>',
+                groupName: '<%= @group_name %>'
             };
             // Create post request
 
             // Validate forms before submitting
             if(calData['name'].length > 0 && calData['url'].length > 0) {
                 $.ajax({
-                    url: '<%= url_for controller: 'external_calendars', action: 'create' %>',
+                    url: '<%= url_for :create_external_calendar %>',
                     data: calData,
                     timeout: 0,
                     type: 'POST',
@@ -130,7 +133,8 @@
                 // Change the modal delete button to delete the selected calendar
                 $("#deleteCalBtn").click(function() {
                     $.ajax({
-                        url:  window.location.pathname + '/' + calDeleteId,
+                        url:  "<%= url_for :delete_external_calendars %>",
+                        data: { id: calDeleteId },
                         type: 'DELETE',
                         success: function(data) {
                             location.reload(true);

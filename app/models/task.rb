@@ -1,6 +1,7 @@
 class Task < ApplicationRecord
 
   has_many :scheduled_tasks, dependent: :delete_all
+  belongs_to :group
 
   # Return how many more times this Task must be scheduled in the term
   # starting at start_date to complete term obligation

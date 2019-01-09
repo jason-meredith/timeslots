@@ -7,7 +7,10 @@ class Api::ScheduleController < ApplicationController
 
   def external_events
 
-    events = ExternalEvent.week( params[:week_offset].to_i ) do |event|
+    group = Group.find_group(params[:group_name], params[:group_id])
+
+
+    events = ExternalEvent.week( group, params[:week_offset].to_i ) do |event|
 
       {
           id: event.id,
@@ -31,7 +34,11 @@ class Api::ScheduleController < ApplicationController
   end
 
   def scheduled_tasks
-    events = ScheduledTask.week( params[:week_offset].to_i ) do |event|
+
+
+    group = Group.find_group(params[:group_name], params[:group_id])
+
+    events = ScheduledTask.week( group, params[:week_offset].to_i ) do |event|
 
       {
           id: event.id,

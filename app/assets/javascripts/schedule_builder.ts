@@ -581,11 +581,12 @@ class TaskQueue {
 
         let output: string = '<div id="taskContainer" style="float: right; width: 23%; ">';
 
+        output += "<br><div id='showCalendarsBtn' class='taskbarBtn' style='margin-bottom: 40px;'>Show Calendars</div>";
         this.tasks.forEach( (task) => {
             output += task.getHtml();
         });
 
-        output += "<br><div class='addTaskBtn'>+ Add Task</div>";
+        output += "<br><div id='newTaskBtn' class='taskbarBtn'>+ New Task</div>";
 
         output += "</div>";
 

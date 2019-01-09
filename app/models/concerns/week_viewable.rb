@@ -3,7 +3,7 @@ module Week_Viewable
 
   module ClassMethods
 
-    def week(week_offset=0)
+    def week(group, week_offset=0)
       time_period_start = Time.now.beginning_of_day + ( week_offset * 7.day )
 
       week_events = []
@@ -23,8 +23,10 @@ module Week_Viewable
         day_events['events'] = []
         all_week_events.where(start: time_period_start + weekday.day..time_period_start.end_of_day + weekday.day).each do |event|
 
-          output = yield event
-          day_events['events'] << output
+          if event.group == group
+            output = yield event
+            day_events['events'] << output
+          end
 
         end
         week_events << day_events

@@ -14,7 +14,17 @@ class TasksController < ApplicationController
     new_task = params.require(:task).permit(:name, :description, :duration, :category, :tags, :priority,
                                             :duration, :occurrence_term, :occurrence_num)
 
-    Task.create(new_task)
+
+    #t.save
+
+    t = Task.new(new_task)
+    t.group=Group.find(session[:group])
+
+    #t[:group_id] = session[:group_id]
+
+    t.save
+
+
 
     render json: params[:task]
   end

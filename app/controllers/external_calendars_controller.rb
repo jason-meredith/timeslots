@@ -3,7 +3,15 @@ class ExternalCalendarsController < ApplicationController
 
   # Show a list of External Calendars
   def index
-    @calendars = ExternalCalendar.all
+
+
+    @group_name = params[:groupName]
+    @group_id = params[:groupId]
+
+    group = Group.find_group(@group_name, @group_id)
+
+    @calendars = group.external_calendars
+
   end
 
   def create
@@ -14,9 +22,17 @@ class ExternalCalendarsController < ApplicationController
     parser.download_calendar
     parser.get_events
 
+    # Get group
+    group = Group.find_group(params["groupName"], params["groupId"])
+
     # If success, Convert parser hashes to ExternalEvents
     if parser.status[:code] == CalendarParser::SUCCESS
-      new_cal = ExternalCalendar.create(name: params[:name], color: params[:color], url: params[:url])
+      new_cal = ExternalCalendar.new(name: params[:name], color: params[:color], url: params[:url], group: group)
+
+      group.save
+
+      new_cal.save
+
 
       ExternalEvent.transaction do
 

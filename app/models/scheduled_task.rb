@@ -4,4 +4,10 @@ class ScheduledTask < ApplicationRecord
   belongs_to :task
 
 
+
+  def group
+    task.group
+  end
+
+
 end

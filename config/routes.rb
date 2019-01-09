@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
 
   resources :tasks
-  resources :external_calendars
+  #resources :external_calendars
 
 
   get 'schedule', to: 'schedule#index'
@@ -21,18 +21,38 @@ Rails.application.routes.draw do
   post 'schedule/add', to: 'schedule#schedule_task'
 
 
+
+
+  get 'schedule/:groupId/:groupName/calendars',
+      to: 'external_calendars#index',
+      as: :external_calendars,
+      constraints: { groupId: /[0-9]{8}/ }
+
+  post 'schedule/:groupId/:groupName/calendars',
+       to: 'external_calendars#create',
+       as: :create_external_calendar,
+       constraints: { groupId: /[0-9]{8}/ }
+
+  delete 'schedule/:groupId/:groupName/calendars',
+         to: 'external_calendars#destroy',
+         as: :delete_external_calendars,
+         constraints: { groupId: /[0-9]{8}/ }
+
+
+  post 'group/create',
+       to: 'groups#create'
+
+
+
   namespace :api do
     scope '/schedule' do
 
-      get 'events(/:week_offset)',
-          to: 'schedule#external_events',
-          defaults: { week_offset: 0},
-          constraints: { week_offset: /[\-]?\d/ }
+      get 'events',
+          to: 'schedule#external_events'
 
-      get 'scheduled_tasks(/:week_offset)',
-          to: 'schedule#scheduled_tasks',
-          defaults: { week_offset: 0},
-          constraints: { week_offset: /[\-]?\d/ }
+
+      get 'scheduled_tasks',
+          to: 'schedule#scheduled_tasks'
 
       get 'freetime(/:week_offset)',
           to: 'schedule#freetime',
@@ -45,10 +65,8 @@ Rails.application.routes.draw do
 
     scope '/tasks' do
 
-      get 'queued(/:week_offset)',
-          to: 'tasks#queued',
-          defaults: {week_offset: 0},
-          constraints: { week_offset: /[\-]?\d/ }
+      get 'queued',
+          to: 'tasks#queued'
 
 
 

@@ -2,6 +2,7 @@ class Group < ApplicationRecord
 
   has_and_belongs_to_many :users
   has_many :external_calendars, dependent: :delete_all
+  has_many :tasks, dependent: :delete_all
 
   def get_group_id
     (name.hash + created_at.hash).abs.to_s[0..7]

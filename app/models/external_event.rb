@@ -6,6 +6,10 @@ class ExternalEvent < ApplicationRecord
 
   belongs_to :external_calendar
 
+  def group
+    external_calendar.group
+  end
+
 
   def self.week_freetime( week_offset )
 

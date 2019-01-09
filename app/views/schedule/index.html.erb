@@ -122,8 +122,12 @@
           });
 
 
-          $('.addTaskBtn').click(function () {
+          $('#newTaskBtn').click(function () {
               window.location.href = "<%= url_for :new_task %>";
+          })
+
+          $('#showCalendarsBtn').click(function() {
+              window.location.href = "<%= url_for :external_calendars %>";
           })
 
       };
@@ -138,9 +142,9 @@
           builder.setOnReady(builderOnReady);
 
           // Data sources
-          eventsSrc = '<%= url_for controller: 'api/schedule', action: 'external_events' %>/' + week;
-          scheduledTaskSrc = '<%= url_for controller: 'api/schedule', action: 'scheduled_tasks' %>/' + week;
-          taskSrc = '<%= url_for controller: 'api/tasks', action: 'queued' %>/' + week;
+          eventsSrc = '<%= url_for :api_events %>?week_offset=' + week + '&group_id=<%= @group_id %>&group_name=<%= @group_name %>';
+          scheduledTaskSrc = '<%= url_for :api_scheduled_tasks %>?week_offset=' + week + '&group_id=<%= @group_id %>&group_name=<%= @group_name %>';
+          taskSrc = '<%= url_for :api_queued %>?week_offset=' + week + '&group_id=<%= @group_id %>&group_name=<%= @group_name %>';
           freetimeSrc = '<%= url_for controller: 'api/schedule', action: 'freetime' %>/' + week;
 
           //builder.resetComponents();
